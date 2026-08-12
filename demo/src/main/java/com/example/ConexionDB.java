@@ -3,8 +3,12 @@ package com.example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ConexionDB {
 
@@ -99,5 +103,28 @@ public class ConexionDB {
         } catch (SQLException e) {
             System.out.println("Error al eliminar: " + e.getMessage());
         }
+    }
+
+    public static ObservableList<Persona> obtenerTodasLasPersonas() {
+        ObservableList<Persona> personas = FXCollections.observableArrayList();
+        String sql = "SELECT id, nombre, apellido, email FROM personas";
+
+        try (Connection conexion = conectar();
+             Statement statement = conexion.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nombre = resultSet.getString("nombre");
+                String apellido = resultSet.getString("apellido");
+                String email = resultSet.getString("email");
+                personas.add(new Persona(id, nombre, apellido, email));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener personas: " + e.getMessage());
+        }
+
+        return personas;
     }
     }
