@@ -8,6 +8,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Tooltip;
+import javafx.css.PseudoClass;
 
 public class RutaFormController {
 
@@ -45,6 +48,8 @@ public class RutaFormController {
         @FXML
         public void initialize() {
 
+                configurarCampos();
+
                 tipoTerrenoCombo.getItems().addAll(
                                 "Rocoso",
                                 "Boscoso",
@@ -69,23 +74,19 @@ public class RutaFormController {
         }
 
         private boolean validarCampos() {
-                if (nombreField.getText().trim().isEmpty()) {
+                String nombre = Ruta.normalizarNombre(nombreField.getText());
+                if (nombre.isEmpty()) {
                         mostrarAlerta("Error", "El nombre es obligatorio.");
                         return false;
                 }
 
-                if (latitudInicialField.getText().trim().isEmpty()) {
-                        mostrarAlerta("Error", "La latitud es obligatoria.");
+                if (!Ruta.nombreValido(nombre)) {
+                        mostrarAlerta("Error", "El nombre solo puede contener letras, números y espacios.");
                         return false;
                 }
 
-                if (longitudInicialField.getText().trim().isEmpty()) {
-                        mostrarAlerta("Error", "La longitud es obligatoria.");
-                        return false;
-                }
-
-                if (altitudMaximaField.getText().trim().isEmpty()) {
-                        mostrarAlerta("Error", "La altitud máxima es obligatoria.");
+                if (ConexionDB.existeNombre(nombre, rutaEnEdicion == null ? -1 : rutaEnEdicion.getId())) {
+                        mostrarAlerta("Error", "Ya existe una ruta con ese nombre.");
                         return false;
                 }
 
@@ -101,20 +102,6 @@ public class RutaFormController {
 
                 if (dificultadFisicaCombo.getValue() == null) {
                         mostrarAlerta("Error", "Debes seleccionar una dificultad física.");
-                        return false;
-                }
-
-                String nombre = Ruta.normalizarNombre(nombreField.getText());
-                if (!Ruta.nombreValido(nombre)) {
-                        mostrarAlerta(
-                                        "Error",
-                                        "El nombre solo puede contener letras, números y espacios.");
-                        return false;
-                }
-
-                int idExcluido = rutaEnEdicion == null ? -1 : rutaEnEdicion.getId();
-                if (ConexionDB.existeNombre(nombre, idExcluido)) {
-                        mostrarAlerta("Error", "Ya existe una ruta con ese nombre.");
                         return false;
                 }
 
@@ -140,24 +127,15 @@ public class RutaFormController {
 
                         String nombre = Ruta.normalizarNombre(nombreField.getText());
 
-                        double latitudInicial = Double.parseDouble(latitudInicialField.getText().trim());
-
-                        double longitudInicial = Double.parseDouble(longitudInicialField.getText().trim());
-
-                        double altitudMaxima = Double.parseDouble(altitudMaximaField.getText().trim());
+                        double latitudInicial = parsearLatitud();
+                        double longitudInicial = parsearLongitud();
+                        double altitudMaxima = parsearAltitud();
 
                         String tipoTerreno = tipoTerrenoCombo.getValue();
 
                         String dificultadTecnica = dificultadTecnicaCombo.getValue();
 
                         String dificultadFisica = dificultadFisicaCombo.getValue();
-
-                        if (!coordenadasValidas(latitudInicial, longitudInicial)) {
-                                mostrarAlerta(
-                                                "Error",
-                                                "La latitud debe estar entre -90 y 90 y la longitud entre -180 y 180.");
-                                return;
-                        }
 
                         Ruta ruta = rutaEnEdicion == null
                                         ? new Ruta(nombre, latitudInicial, longitudInicial, altitudMaxima,
@@ -183,11 +161,116 @@ public class RutaFormController {
                                                         : "Ruta actualizada correctamente.");
 
                 } catch (NumberFormatException e) {
-
-                        mostrarAlerta(
-                                        "Error",
-                                        "Latitud, longitud y altitud deben ser valores numéricos.");
+                        return;
                 }
+        }
+
+        private double parsearLatitud() {
+                if (latitudInicialField.getText().trim().isEmpty()) {
+                        mostrarAlerta("Error de latitud", "La latitud es obligatoria.");
+                        throw new NumberFormatException("latitud vacía");
+                }
+
+                double latitud;
+                try {
+                        latitud = Double.parseDouble(latitudInicialField.getText().trim());
+                } catch (NumberFormatException e) {
+                        mostrarAlerta("Error de latitud", "La latitud debe ser un número válido.");
+                        throw e;
+                }
+                if (!Double.isFinite(latitud) || latitud < -90 || latitud > 90) {
+                        mostrarAlerta("Error de latitud", "La latitud debe ser un número entre -90 y 90.");
+                        throw new NumberFormatException("latitud fuera de rango");
+                }
+                return latitud;
+        }
+
+        private double parsearLongitud() {
+                if (longitudInicialField.getText().trim().isEmpty()) {
+                        mostrarAlerta("Error de longitud", "La longitud es obligatoria.");
+                        throw new NumberFormatException("longitud vacía");
+                }
+
+                double longitud;
+                try {
+                        longitud = Double.parseDouble(longitudInicialField.getText().trim());
+                } catch (NumberFormatException e) {
+                        mostrarAlerta("Error de longitud", "La longitud debe ser un número válido.");
+                        throw e;
+                }
+                if (!Double.isFinite(longitud) || longitud < -180 || longitud > 180) {
+                        mostrarAlerta("Error de longitud", "La longitud debe ser un número entre -180 y 180.");
+                        throw new NumberFormatException("longitud fuera de rango");
+                }
+                return longitud;
+        }
+
+        private double parsearAltitud() {
+                if (altitudMaximaField.getText().trim().isEmpty()) {
+                        mostrarAlerta("Error de altitud", "La altitud máxima es obligatoria.");
+                        throw new NumberFormatException("altitud vacía");
+                }
+
+                double altitud;
+                try {
+                        altitud = Double.parseDouble(altitudMaximaField.getText().trim());
+                } catch (NumberFormatException e) {
+                        mostrarAlerta("Error de altitud", "La altitud máxima debe ser un número válido.");
+                        throw e;
+                }
+                if (!Double.isFinite(altitud) || altitud < 0) {
+                        mostrarAlerta("Error de altitud", "La altitud máxima debe ser un número mayor o igual que 0.");
+                        throw new NumberFormatException("altitud no válida");
+                }
+                return altitud;
+        }
+
+        private void configurarCampos() {
+                nombreField.setTextFormatter(crearFormatter(
+                                nombreField,
+                                "[\\p{L}\\p{N} ]*",
+                                "El nombre solo admite letras, números y espacios."));
+
+                latitudInicialField.setTextFormatter(crearFormatterNumerico(
+                                latitudInicialField, true, "La latitud solo admite números, signo negativo y punto decimal."));
+                longitudInicialField.setTextFormatter(crearFormatterNumerico(
+                                longitudInicialField, true, "La longitud solo admite números, signo negativo y punto decimal."));
+                altitudMaximaField.setTextFormatter(crearFormatterNumerico(
+                                altitudMaximaField, false, "La altitud solo admite números y punto decimal."));
+        }
+
+        private TextFormatter<String> crearFormatter(
+                        TextField campo,
+                        String patron,
+                        String mensaje) {
+                return new TextFormatter<>(change -> {
+                        if (change.getControlNewText().matches(patron)) {
+                                limpiarError(campo);
+                                return change;
+                        }
+
+                        marcarError(campo, mensaje);
+                        return null;
+                });
+        }
+
+        private TextFormatter<String> crearFormatterNumerico(
+                        TextField campo,
+                        boolean admiteNegativo,
+                        String mensaje) {
+                String patron = admiteNegativo
+                                ? "-?[0-9]*\\.?[0-9]*"
+                                : "[0-9]*\\.?[0-9]*";
+                return crearFormatter(campo, patron, mensaje);
+        }
+
+        private void marcarError(TextField campo, String mensaje) {
+                campo.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), true);
+                campo.setTooltip(new Tooltip(mensaje));
+        }
+
+        private void limpiarError(TextField campo) {
+                campo.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), false);
         }
 
         private void limpiarCampos() {

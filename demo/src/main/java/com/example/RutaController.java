@@ -51,6 +51,8 @@ public class RutaController implements Initializable {
 
         colNombre.setCellValueFactory(
                 new PropertyValueFactory<>("nombre"));
+        colNombre.setComparator(String.CASE_INSENSITIVE_ORDER);
+        colNombre.setSortType(TableColumn.SortType.ASCENDING);
 
         colLatitudInicial.setCellValueFactory(
                 new PropertyValueFactory<>("latitudInicial"));
@@ -72,6 +74,8 @@ public class RutaController implements Initializable {
 
 
         cargarRutas();
+        tablaRutas.getSortOrder().add(colNombre);
+        tablaRutas.sort();
     }
 
 
