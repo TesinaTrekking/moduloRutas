@@ -14,6 +14,8 @@ import javafx.css.PseudoClass;
 
 public class RutaFormController {
 
+        private final RutaDAO rutaDAO = new RutaDAO();
+
         @FXML
         private Label tituloForm;
 
@@ -85,7 +87,7 @@ public class RutaFormController {
                         return false;
                 }
 
-                if (ConexionDB.existeNombre(nombre, rutaEnEdicion == null ? -1 : rutaEnEdicion.getId())) {
+                if (rutaDAO.existeNombre(nombre, rutaEnEdicion == null ? -1 : rutaEnEdicion.getId())) {
                         mostrarAlerta("Error", "Ya existe una ruta con ese nombre.");
                         return false;
                 }
@@ -144,8 +146,8 @@ public class RutaFormController {
                                                         altitudMaxima, tipoTerreno, dificultadTecnica, dificultadFisica);
 
                         boolean guardada = rutaEnEdicion == null
-                                        ? ConexionDB.insertarRuta(ruta)
-                                        : ConexionDB.actualizarRuta(ruta);
+                                        ? rutaDAO.insertar(ruta)
+                                        : rutaDAO.actualizar(ruta);
 
                         if (!guardada) {
                                 mostrarAlerta("Error", "No se pudo guardar la ruta. Comprueba que el nombre no esté repetido.");

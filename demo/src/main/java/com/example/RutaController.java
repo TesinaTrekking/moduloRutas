@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -14,6 +15,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class RutaController implements Initializable {
+
+        private final RutaDAO rutaDAO = new RutaDAO();
 
     @FXML
     private TableView<Ruta> tablaRutas;
@@ -82,7 +85,7 @@ public class RutaController implements Initializable {
     private void cargarRutas() {
 
         ObservableList<Ruta> rutas =
-                ConexionDB.obtenerTodasLasRutas();
+                FXCollections.observableArrayList(rutaDAO.obtenerTodas());
 
         tablaRutas.setItems(rutas);
     }
@@ -148,7 +151,7 @@ public class RutaController implements Initializable {
         if (confirmacion.showAndWait().orElse(null)
                 == ButtonType.OK) {
 
-            ConexionDB.eliminarRuta(
+            rutaDAO.eliminar(
                     rutaSeleccionada.getId());
 
             cargarRutas();
