@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class ConexionDB {
 
-    private static final String URL = "jdbc:sqlite:trekking.db";
+    private static final String URL = "jdbc:sqlite:rutas.db";
 
 
     // =========================================================
