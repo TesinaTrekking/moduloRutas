@@ -130,11 +130,11 @@
 
               <Button text="Guardar"
                      onAction="#guardarRuta"
-                     style="-fx-padding: 10px 20px;" />
+                     styleClass="button-save" />
 
               <Button text="Cancelar"
                      onAction="#volverListado"
-                     style="-fx-padding: 10px 20px;" />
+                     styleClass="button-delete" />
 
        </HBox>
 

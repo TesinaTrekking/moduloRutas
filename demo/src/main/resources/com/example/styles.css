@@ -27,9 +27,32 @@
     -fx-cursor: hand;
 }
 
-/* Efecto cuando pasás el mouse por encima */
 .button:hover {
     -fx-background-color: #2980b9;
+}
+
+.button-save {
+    -fx-background-color: #2e7d32;
+}
+
+.button-save:hover {
+    -fx-background-color: #256628;
+}
+
+.button-edit {
+    -fx-background-color: #1976d2;
+}
+
+.button-edit:hover {
+    -fx-background-color: #1565c0;
+}
+
+.button-delete {
+    -fx-background-color: #c62828;
+}
+
+.button-delete:hover {
+    -fx-background-color: #a51f1f;
 }
 
 .text-field:error {

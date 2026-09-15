@@ -10,6 +10,31 @@ public class Ruta {
                 : nombre.trim().replaceAll("\\s+", " ");
     }
 
+    public static String formatearNombre(String nombre) {
+        String normalizado = normalizarNombre(nombre).toLowerCase(Locale.ROOT);
+
+        if (normalizado.isEmpty()) {
+            return "";
+        }
+
+        String[] palabras = normalizado.split(" ");
+        StringBuilder resultado = new StringBuilder();
+
+        for (String palabra : palabras) {
+            if (resultado.length() > 0) {
+                resultado.append(" ");
+            }
+
+            resultado.append(
+                    Character.toUpperCase(palabra.charAt(0))
+            ).append(
+                    palabra.substring(1)
+            );
+        }
+
+        return resultado.toString();
+    }
+
     public static boolean nombreValido(String nombre) {
         return normalizarNombre(nombre)
                 .matches("[\\p{L}\\p{N}]+(?: [\\p{L}\\p{N}]+)*");

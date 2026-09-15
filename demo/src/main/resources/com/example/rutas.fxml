@@ -66,15 +66,15 @@
 
             <Button text="Agregar ruta"
                     onAction="#switchToForm"
-                    style="-fx-padding: 10px 20px; -fx-font-size: 12;" />
+                    styleClass="button-save" />
 
             <Button text="Editar"
                     onAction="#editarRuta"
-                    style="-fx-padding: 10px 20px; -fx-font-size: 12;" />
+                    styleClass="button-edit" />
 
             <Button text="Eliminar"
                     onAction="#eliminarRuta"
-                    style="-fx-padding: 10px 20px; -fx-font-size: 12;" />
+                    styleClass="button-delete" />
 
         </HBox>
 

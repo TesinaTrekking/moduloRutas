@@ -121,13 +121,13 @@ public class RutaFormController {
         }
 
         @FXML
-        private void guardarRuta() {
+        private void guardarRuta() throws IOException  {
                 if (!validarCampos()) {
                         return;
                 }
                 try {
 
-                        String nombre = Ruta.normalizarNombre(nombreField.getText());
+                        String nombre = Ruta.formatearNombre(nombreField.getText());
 
                         double latitudInicial = parsearLatitud();
                         double longitudInicial = parsearLongitud();
@@ -154,7 +154,7 @@ public class RutaFormController {
                                 return;
                         }
 
-                        limpiarCampos();
+                        volverListado();
 
                         mostrarAlerta(
                                         "Éxito",
