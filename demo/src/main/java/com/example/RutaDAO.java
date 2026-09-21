@@ -109,7 +109,7 @@ public class RutaDAO {
 
     public boolean eliminar(int id) {
 
-        String sql = "DELETE FROM rutas WHERE id = ?";
+        String sql = "UPDATE rutas SET activo = 0 WHERE id = ?";
 
         try (
             Connection conexion = ConexionDB.conectar();
@@ -144,6 +144,7 @@ public class RutaDAO {
                 dificultad_tecnica,
                 dificultad_fisica
             FROM rutas
+            WHERE activo = 1
             """;
 
         try (

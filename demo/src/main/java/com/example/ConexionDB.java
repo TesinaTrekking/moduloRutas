@@ -38,7 +38,8 @@ public class ConexionDB {
                 altitud_maxima REAL NOT NULL,
                 tipo_terreno TEXT NOT NULL,
                 dificultad_tecnica TEXT NOT NULL,
-                dificultad_fisica TEXT NOT NULL
+                dificultad_fisica TEXT NOT NULL,
+                activo INTEGER NOT NULL DEFAULT 1
             )
             """;
 
