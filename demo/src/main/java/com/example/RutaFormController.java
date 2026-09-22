@@ -10,10 +10,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
+
 import javafx.css.PseudoClass;
 
 public class RutaFormController {
 
+        private static final int DECIMALES_COORDENADAS = 4;
         private final RutaDAO rutaDAO = new RutaDAO();
 
         @FXML
@@ -110,18 +113,8 @@ public class RutaFormController {
                 return true;
         }
 
-        private boolean coordenadasValidas(double latitud, double longitud) {
-
-        return Double.isFinite(latitud)
-                && Double.isFinite(longitud)
-                && latitud >= -90
-                && latitud <= 90
-                && longitud >= -180
-                && longitud <= 180;
-        }
-
         @FXML
-        private void guardarRuta() throws IOException  {
+        private void guardarRuta() throws IOException {
                 if (!validarCampos()) {
                         return;
                 }
@@ -143,14 +136,16 @@ public class RutaFormController {
                                         ? new Ruta(nombre, latitudInicial, longitudInicial, altitudMaxima,
                                                         tipoTerreno, dificultadTecnica, dificultadFisica)
                                         : new Ruta(rutaEnEdicion.getId(), nombre, latitudInicial, longitudInicial,
-                                                        altitudMaxima, tipoTerreno, dificultadTecnica, dificultadFisica);
+                                                        altitudMaxima, tipoTerreno, dificultadTecnica,
+                                                        dificultadFisica);
 
                         boolean guardada = rutaEnEdicion == null
                                         ? rutaDAO.insertar(ruta)
                                         : rutaDAO.actualizar(ruta);
 
                         if (!guardada) {
-                                mostrarAlerta("Error", "No se pudo guardar la ruta. Comprueba que el nombre no esté repetido.");
+                                mostrarAlerta("Error",
+                                                "No se pudo guardar la ruta. Comprueba que el nombre no esté repetido.");
                                 return;
                         }
 
@@ -234,11 +229,14 @@ public class RutaFormController {
                                 "El nombre solo admite letras, números y espacios."));
 
                 latitudInicialField.setTextFormatter(crearFormatterNumerico(
-                                latitudInicialField, true, "La latitud solo admite números, signo negativo y punto decimal."));
+                                latitudInicialField, true, DECIMALES_COORDENADAS,
+                                "La latitud solo admite números, signo negativo y punto decimal."));
                 longitudInicialField.setTextFormatter(crearFormatterNumerico(
-                                longitudInicialField, true, "La longitud solo admite números, signo negativo y punto decimal."));
+                                longitudInicialField, true, DECIMALES_COORDENADAS,
+                                "La longitud solo admite números, signo negativo y punto decimal."));
                 altitudMaximaField.setTextFormatter(crearFormatterNumerico(
-                                altitudMaximaField, false, "La altitud solo admite números y punto decimal."));
+                                altitudMaximaField, false, -1,
+                                "La altitud solo admite números y punto decimal."));
         }
 
         private TextFormatter<String> crearFormatter(
@@ -259,31 +257,56 @@ public class RutaFormController {
         private TextFormatter<String> crearFormatterNumerico(
                         TextField campo,
                         boolean admiteNegativo,
+                        int maxDecimales,
                         String mensaje) {
+
                 String patron = admiteNegativo
                                 ? "-?[0-9]*\\.?[0-9]*"
                                 : "[0-9]*\\.?[0-9]*";
-                return crearFormatter(campo, patron, mensaje);
+
+                return new TextFormatter<>(change -> {
+
+                        String texto = change.getControlNewText();
+
+                        if (!texto.matches(patron)) {
+                                marcarError(campo, mensaje);
+                                return null;
+                        }
+
+                        if (maxDecimales >= 0 && texto.contains(".")) {
+                                String parteDecimal = texto.substring(texto.indexOf('.') + 1);
+
+                                if (parteDecimal.length() > maxDecimales) {
+                                        marcarError(
+                                                        campo,
+                                                        "La cantidad máxima de decimales permitida es "
+                                                                        + maxDecimales
+                                                                        + ".");
+                                        return null;
+                                }
+                        }
+
+                        limpiarError(campo);
+                        return change;
+                });
         }
 
         private void marcarError(TextField campo, String mensaje) {
-                campo.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), true);
-                campo.setTooltip(new Tooltip(mensaje));
+                campo.pseudoClassStateChanged(
+                                PseudoClass.getPseudoClass("error"),
+                                true);
+
+                Tooltip tooltip = new Tooltip(mensaje);
+                tooltip.setShowDelay(Duration.millis(200));
+                tooltip.setShowDuration(Duration.seconds(5));
+                tooltip.setHideDelay(Duration.millis(100));
+
+                campo.setTooltip(tooltip);
         }
+
 
         private void limpiarError(TextField campo) {
                 campo.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), false);
-        }
-
-        private void limpiarCampos() {
-
-                nombreField.clear();
-                latitudInicialField.clear();
-                longitudInicialField.clear();
-                altitudMaximaField.clear();
-                tipoTerrenoCombo.setValue(null);
-                dificultadTecnicaCombo.setValue(null);
-                dificultadFisicaCombo.setValue(null);
         }
 
         private void cargarRuta(Ruta ruta) {
