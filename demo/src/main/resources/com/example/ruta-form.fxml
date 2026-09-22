@@ -48,7 +48,7 @@
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="2" />
 
-                     <Label text="Número entre -90 y 90."
+                     <Label text="Número entre -90 y 90. Use punto decimal. Máximo 4 decimales."
                             styleClass="field-help"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="3" />
@@ -62,7 +62,7 @@
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="4" />
 
-                     <Label text="Número entre -180 y 180."
+                     <Label text="Número entre -180 y 180. Use punto decimal. Máximo 4 decimales."
                             styleClass="field-help"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="5" />
@@ -76,7 +76,7 @@
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="6" />
 
-                     <Label text="Número mayor o igual que 0."
+                     <Label text="Número mayor o igual que 0. La altitud se mide en metros. Use punto decimal si necesita indicar decimales."
                             styleClass="field-help"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="7" />

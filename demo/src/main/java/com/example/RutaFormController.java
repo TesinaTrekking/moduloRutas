@@ -230,13 +230,13 @@ public class RutaFormController {
 
                 latitudInicialField.setTextFormatter(crearFormatterNumerico(
                                 latitudInicialField, true, DECIMALES_COORDENADAS,
-                                "La latitud solo admite números, signo negativo y punto decimal."));
+                                "La latitud debe estar entre -90 y 90. Use punto decimal y hasta 4 decimales."));
                 longitudInicialField.setTextFormatter(crearFormatterNumerico(
                                 longitudInicialField, true, DECIMALES_COORDENADAS,
-                                "La longitud solo admite números, signo negativo y punto decimal."));
+                                "Ingrese un valor entre -180 y 180. Use punto decimal y hasta 4 decimales."));
                 altitudMaximaField.setTextFormatter(crearFormatterNumerico(
                                 altitudMaximaField, false, -1,
-                                "La altitud solo admite números y punto decimal."));
+                                "Ingrese la altitud en metros. Use punto decimal si necesita indicar decimales."));
         }
 
         private TextFormatter<String> crearFormatter(
