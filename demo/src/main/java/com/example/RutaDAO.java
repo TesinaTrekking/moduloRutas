@@ -162,6 +162,37 @@ public class RutaDAO {
         return rutas;
     }
 
+
+    public List<Ruta> obtenerTodasIncluyendoInactivas() {
+    String sql = """
+        SELECT id, nombre, latitud_inicial, longitud_inicial,
+               altitud_maxima, tipo_terreno, dificultad_tecnica,
+               dificultad_fisica
+        FROM rutas
+        """;
+
+    List<Ruta> rutas = new ArrayList<>();
+
+    try (
+        Connection conexion = ConexionDB.conectar();
+        PreparedStatement statement =
+                conexion.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery()
+    ) {
+        while (resultSet.next()) {
+            rutas.add(mapRow(resultSet));
+        }
+    } catch (SQLException e) {
+        System.out.println(
+            "Error al obtener todas las rutas: "
+            + e.getMessage()
+        );
+    }
+
+    return rutas;
+}
+
+
     private Ruta mapRow(ResultSet rs) throws SQLException {
         return new Ruta(
                 rs.getInt("id"),

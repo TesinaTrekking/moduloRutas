@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -13,10 +14,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 
 public class RutaController implements Initializable {
 
         private final RutaDAO rutaDAO = new RutaDAO();
+        private ObservableList<Ruta> rutas;
+        private FilteredList<Ruta> rutasFiltradas;
 
         @FXML
         private TableView<Ruta> tablaRutas;
@@ -44,6 +50,21 @@ public class RutaController implements Initializable {
 
         @FXML
         private TableColumn<Ruta, String> colDificultadFisica;
+
+        @FXML
+        private TextField buscarField;
+
+        @FXML
+        private ComboBox<String> filtroTerrenoCombo;
+
+        @FXML
+        private ComboBox<String> filtroDificultadTecnicaCombo;
+
+        @FXML
+        private ComboBox<String> filtroDificultadFisicaCombo;
+
+        @FXML
+        private CheckBox mostrarInactivasCheckBox;
 
         @Override
         public void initialize(URL url, ResourceBundle rb) {
@@ -74,16 +95,29 @@ public class RutaController implements Initializable {
                 colDificultadFisica.setCellValueFactory(
                                 new PropertyValueFactory<>("dificultadFisica"));
 
+                configurarFiltros();
                 cargarRutas();
+
                 tablaRutas.getSortOrder().add(colNombre);
                 tablaRutas.sort();
+
         }
 
         private void cargarRutas() {
 
-                ObservableList<Ruta> rutas = FXCollections.observableArrayList(rutaDAO.obtenerTodas());
+                if (mostrarInactivasCheckBox.isSelected()) {
+                        rutas = FXCollections.observableArrayList(
+                                        rutaDAO.obtenerTodasIncluyendoInactivas());
+                } else {
+                        rutas = FXCollections.observableArrayList(
+                                        rutaDAO.obtenerTodas());
+                }
 
-                tablaRutas.setItems(rutas);
+                rutasFiltradas = new FilteredList<>(rutas);
+
+                tablaRutas.setItems(rutasFiltradas);
+
+                aplicarFiltros();
         }
 
         @FXML
@@ -147,6 +181,90 @@ public class RutaController implements Initializable {
                                                 "No se pudo eliminar la ruta.");
                         }
                 }
+        }
+
+        private void configurarFiltros() {
+
+                filtroTerrenoCombo.getItems().addAll(
+                                "Todos",
+                                "Rocoso",
+                                "Boscoso",
+                                "Sendero",
+                                "Mixto");
+
+                filtroDificultadTecnicaCombo.getItems().addAll(
+                                "Todas",
+                                "Baja",
+                                "Media",
+                                "Alta");
+
+                filtroDificultadFisicaCombo.getItems().addAll(
+                                "Todas",
+                                "Baja",
+                                "Media",
+                                "Alta");
+
+                filtroTerrenoCombo.setValue("Todos");
+                filtroDificultadTecnicaCombo.setValue("Todas");
+                filtroDificultadFisicaCombo.setValue("Todas");
+
+                buscarField.textProperty().addListener(
+                                (observable, anterior, actual) -> aplicarFiltros());
+
+                filtroTerrenoCombo.valueProperty().addListener(
+                                (observable, anterior, actual) -> aplicarFiltros());
+
+                filtroDificultadTecnicaCombo.valueProperty().addListener(
+                                (observable, anterior, actual) -> aplicarFiltros());
+
+                filtroDificultadFisicaCombo.valueProperty().addListener(
+                                (observable, anterior, actual) -> aplicarFiltros());
+
+                mostrarInactivasCheckBox.selectedProperty().addListener(
+                                (observable, anterior, actual) -> {
+                                        System.out.println("CHECKBOX CAMBIÓ: " + actual);
+                                        cargarRutas();
+                                });
+        }
+
+        private void aplicarFiltros() {
+
+                if (rutasFiltradas == null) {
+                        return;
+                }
+
+                String texto = buscarField.getText().trim().toLowerCase();
+
+                String terreno = filtroTerrenoCombo.getValue();
+
+                String dificultadTecnica = filtroDificultadTecnicaCombo.getValue();
+
+                String dificultadFisica = filtroDificultadFisicaCombo.getValue();
+
+                rutasFiltradas.setPredicate(ruta -> {
+
+                        boolean coincideNombre = texto.isEmpty()
+                                        || ruta.getNombre()
+                                                        .toLowerCase()
+                                                        .contains(texto);
+
+                        boolean coincideTerreno = terreno.equals("Todos")
+                                        || ruta.getTipoTerreno()
+                                                        .equals(terreno);
+
+                        boolean coincideDificultadTecnica = dificultadTecnica.equals("Todas")
+                                        || ruta.getDificultadTecnica()
+                                                        .equals(dificultadTecnica);
+
+                        boolean coincideDificultadFisica = dificultadFisica.equals("Todas")
+                                        || ruta.getDificultadFisica()
+                                                        .equals(dificultadFisica);
+
+                        return coincideNombre
+                                        && coincideTerreno
+                                        && coincideDificultadTecnica
+                                        && coincideDificultadFisica;
+                });
         }
 
         private void mostrarAlerta(
