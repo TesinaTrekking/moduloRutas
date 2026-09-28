@@ -48,6 +48,8 @@ public class Ruta {
     private String nombre;
     private double latitudInicial;
     private double longitudInicial;
+    private double latitudFinal;
+    private double longitudFinal;
     private double altitudMaxima;
     private String tipoTerreno;
     private String dificultadTecnica;
@@ -58,6 +60,8 @@ public class Ruta {
             String nombre,
             double latitudInicial,
             double longitudInicial,
+            double latitudFinal,
+            double longitudFinal,
             double altitudMaxima,
             String tipoTerreno,
             String dificultadTecnica,
@@ -66,6 +70,8 @@ public class Ruta {
         this.nombre = nombre;
         this.latitudInicial = latitudInicial;
         this.longitudInicial = longitudInicial;
+        this.latitudFinal = latitudFinal;
+        this.longitudFinal = longitudFinal;
         this.altitudMaxima = altitudMaxima;
         this.tipoTerreno = tipoTerreno;
         this.dificultadTecnica = dificultadTecnica;
@@ -78,6 +84,8 @@ public class Ruta {
             String nombre,
             double latitudInicial,
             double longitudInicial,
+            double latitudFinal,
+            double longitudFinal,
             double altitudMaxima,
             String tipoTerreno,
             String dificultadTecnica,
@@ -87,6 +95,8 @@ public class Ruta {
         this.nombre = nombre;
         this.latitudInicial = latitudInicial;
         this.longitudInicial = longitudInicial;
+        this.latitudFinal = latitudFinal;
+        this.longitudFinal = longitudFinal;
         this.altitudMaxima = altitudMaxima;
         this.tipoTerreno = tipoTerreno;
         this.dificultadTecnica = dificultadTecnica;
@@ -109,6 +119,14 @@ public class Ruta {
 
     public double getLongitudInicial() {
         return longitudInicial;
+    }
+
+    public double getLatitudFinal() {
+        return latitudFinal;
+    }
+
+    public double getLongitudFinal() {
+        return longitudFinal;
     }
 
     public double getAltitudMaxima() {
@@ -143,6 +161,14 @@ public class Ruta {
 
     public void setLongitudInicial(double longitudInicial) {
         this.longitudInicial = longitudInicial;
+    }
+
+    public void setLatitudFinal(double latitudFinal) {
+        this.latitudFinal = latitudFinal;
+    }
+
+    public void setLongitudFinal(double longitudFinal) {
+        this.longitudFinal = longitudFinal;
     }
 
     public void setAltitudMaxima(double altitudMaxima) {

@@ -38,6 +38,11 @@ public class RutaController implements Initializable {
 
         @FXML
         private TableColumn<Ruta, Double> colLongitudInicial;
+        @FXML
+        private TableColumn<Ruta, Number> colLatitudFinal;
+
+        @FXML
+        private TableColumn<Ruta, Number> colLongitudFinal;
 
         @FXML
         private TableColumn<Ruta, Double> colAltitudMaxima;
@@ -82,6 +87,11 @@ public class RutaController implements Initializable {
 
                 colLongitudInicial.setCellValueFactory(
                                 new PropertyValueFactory<>("longitudInicial"));
+                colLatitudFinal.setCellValueFactory(
+                                new PropertyValueFactory<>("latitudFinal"));
+
+                colLongitudFinal.setCellValueFactory(
+                                new PropertyValueFactory<>("longitudFinal"));
 
                 colAltitudMaxima.setCellValueFactory(
                                 new PropertyValueFactory<>("altitudMaxima"));

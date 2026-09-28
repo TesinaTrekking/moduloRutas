@@ -1,6 +1,6 @@
 /* Fondo de la ventana (el VBox raíz) */
 .root {
-    -fx-background-color: #034d2c;
+    -fx-background-color: #026881;
 }
 
 /* Estilo del texto/Label */
@@ -63,4 +63,7 @@
 .text-field:error {
     -fx-border-color: #e74c3c;
     -fx-border-width: 2px;
+}
+#mostrarInactivasCheckBox {
+    -fx-text-fill: white;
 }

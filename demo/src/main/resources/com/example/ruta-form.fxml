@@ -68,60 +68,88 @@
                             GridPane.rowIndex="5" />
 
 
-                     <Label text="Altitud máxima:"
+                     <Label text="Latitud final:"
                             GridPane.columnIndex="0"
                             GridPane.rowIndex="6" />
 
-                     <TextField fx:id="altitudMaximaField"
+                     <TextField fx:id="latitudFinalField"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="6" />
 
-                     <Label text="Número mayor o igual que 0. La altitud se mide en metros. Use punto decimal si necesita indicar decimales."
+                     <Label text="Número entre -90 y 90. Use punto decimal. Máximo 4 decimales."
                             styleClass="field-help"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="7" />
 
 
-                     <Label text="Tipo de terreno:"
+                     <Label text="Longitud final:"
                             GridPane.columnIndex="0"
                             GridPane.rowIndex="8" />
 
-                     <ComboBox fx:id="tipoTerrenoCombo"
+                     <TextField fx:id="longitudFinalField"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="8" />
 
-                     <Label text="Selecciona una opción de la lista."
+                     <Label text="Número entre -180 y 180. Use punto decimal. Máximo 4 decimales."
                             styleClass="field-help"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="9" />
 
 
-                     <Label text="Dificultad técnica:"
+                     <Label text="Altitud máxima:"
                             GridPane.columnIndex="0"
                             GridPane.rowIndex="10" />
 
-                     <ComboBox fx:id="dificultadTecnicaCombo"
+                     <TextField fx:id="altitudMaximaField"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="10" />
 
-                     <Label text="Selecciona Baja, Media o Alta."
+                     <Label text="Número mayor o igual que 0. La altitud se mide en metros. Use punto decimal si necesita indicar decimales."
                             styleClass="field-help"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="11" />
 
 
-                     <Label text="Dificultad física:"
+                     <Label text="Tipo de terreno:"
                             GridPane.columnIndex="0"
                             GridPane.rowIndex="12" />
 
-                     <ComboBox fx:id="dificultadFisicaCombo"
+                     <ComboBox fx:id="tipoTerrenoCombo"
                             GridPane.columnIndex="1"
                             GridPane.rowIndex="12" />
+
+                     <Label text="Selecciona una opción de la lista."
+                            styleClass="field-help"
+                            GridPane.columnIndex="1"
+                            GridPane.rowIndex="13" />
+
+
+                     <Label text="Dificultad técnica:"
+                            GridPane.columnIndex="0"
+                            GridPane.rowIndex="14" />
+
+                     <ComboBox fx:id="dificultadTecnicaCombo"
+                            GridPane.columnIndex="1"
+                            GridPane.rowIndex="14" />
 
                      <Label text="Selecciona Baja, Media o Alta."
                             styleClass="field-help"
                             GridPane.columnIndex="1"
-                            GridPane.rowIndex="13" />
+                            GridPane.rowIndex="15" />
+
+
+                     <Label text="Dificultad física:"
+                            GridPane.columnIndex="0"
+                            GridPane.rowIndex="16" />
+
+                     <ComboBox fx:id="dificultadFisicaCombo"
+                            GridPane.columnIndex="1"
+                            GridPane.rowIndex="16" />
+
+                     <Label text="Selecciona Baja, Media o Alta."
+                            styleClass="field-help"
+                            GridPane.columnIndex="1"
+                            GridPane.rowIndex="17" />
               </children>
 
        </GridPane>

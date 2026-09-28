@@ -22,23 +22,38 @@
 
         <Label text="Listado de Rutas"
             style="-fx-font-size: 24; -fx-font-weight: bold;" />
-        <HBox spacing="10.0" alignment="CENTER">
+        <HBox spacing="15.0" alignment="CENTER">
 
-            <TextField fx:id="buscarField"
-                promptText="Buscar por nombre"
-                prefWidth="220.0" />
+            <VBox spacing="3.0">
+                <Label text="Buscar por nombre:" />
+                <TextField fx:id="buscarField"
+                    promptText="Nombre"
+                    prefWidth="180.0" />
+            </VBox>
 
-            <ComboBox fx:id="filtroTerrenoCombo"
-                prefWidth="140.0" />
+            <VBox spacing="3.0">
+                <Label text="Tipo de terreno:" />
+                <ComboBox fx:id="filtroTerrenoCombo"
+                    prefWidth="140.0" />
+            </VBox>
 
-            <ComboBox fx:id="filtroDificultadTecnicaCombo"
-                prefWidth="160.0" />
+            <VBox spacing="3.0">
+                <Label text="Dificultad técnica:" />
+                <ComboBox fx:id="filtroDificultadTecnicaCombo"
+                    prefWidth="160.0" />
+            </VBox>
 
-            <ComboBox fx:id="filtroDificultadFisicaCombo"
-                prefWidth="160.0" />
+            <VBox spacing="3.0">
+                <Label text="Dificultad física:" />
+                <ComboBox fx:id="filtroDificultadFisicaCombo"
+                    prefWidth="160.0" />
+            </VBox>
 
-            <CheckBox fx:id="mostrarInactivasCheckBox"
-                text="Mostrar inactivas" />
+            <VBox spacing="3.0" alignment="CENTER">
+                <Label text="Estado:" />
+                <CheckBox fx:id="mostrarInactivasCheckBox"
+                    text="Mostrar inactivas" />
+            </VBox>
 
         </HBox>
 
@@ -63,6 +78,9 @@
                 <TableColumn fx:id="colLongitudInicial"
                     prefWidth="120.0"
                     text="Longitud inicial" />
+                <TableColumn fx:id="colLatitudFinal" prefWidth="120.0" text="Latitud final" />
+                <TableColumn fx:id="colLongitudFinal" prefWidth="120.0" text="Longitud final" />
+
 
                 <TableColumn fx:id="colAltitudMaxima"
                     prefWidth="120.0"

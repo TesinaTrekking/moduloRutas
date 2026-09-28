@@ -34,6 +34,12 @@ public class RutaFormController {
         private TextField longitudInicialField;
 
         @FXML
+        private TextField latitudFinalField;
+
+        @FXML
+        private TextField longitudFinalField;
+
+        @FXML
         private TextField altitudMaximaField;
 
         @FXML
@@ -124,6 +130,8 @@ public class RutaFormController {
 
                         double latitudInicial = parsearLatitud();
                         double longitudInicial = parsearLongitud();
+                        double latitudFinal = parsearLatitudFinal();
+                        double longitudFinal = parsearLongitudFinal();
                         double altitudMaxima = parsearAltitud();
 
                         String tipoTerreno = tipoTerrenoCombo.getValue();
@@ -133,10 +141,12 @@ public class RutaFormController {
                         String dificultadFisica = dificultadFisicaCombo.getValue();
 
                         Ruta ruta = rutaEnEdicion == null
-                                        ? new Ruta(nombre, latitudInicial, longitudInicial, altitudMaxima,
+                                        ? new Ruta(nombre, latitudInicial, longitudInicial,
+                                                        latitudFinal, longitudFinal, altitudMaxima,
                                                         tipoTerreno, dificultadTecnica, dificultadFisica)
                                         : new Ruta(rutaEnEdicion.getId(), nombre, latitudInicial, longitudInicial,
-                                                        altitudMaxima, tipoTerreno, dificultadTecnica,
+                                                        latitudFinal, longitudFinal, altitudMaxima,
+                                                        tipoTerreno, dificultadTecnica,
                                                         dificultadFisica);
 
                         boolean guardada = rutaEnEdicion == null
@@ -202,6 +212,46 @@ public class RutaFormController {
                 return longitud;
         }
 
+        private double parsearLatitudFinal() {
+                if (latitudFinalField.getText().trim().isEmpty()) {
+                        mostrarAlerta("Error de latitud final", "La latitud final es obligatoria.");
+                        throw new NumberFormatException("latitud final vacía");
+                }
+
+                double latitud;
+                try {
+                        latitud = Double.parseDouble(latitudFinalField.getText().trim());
+                } catch (NumberFormatException e) {
+                        mostrarAlerta("Error de latitud final", "La latitud final debe ser un número válido.");
+                        throw e;
+                }
+                if (!Double.isFinite(latitud) || latitud < -90 || latitud > 90) {
+                        mostrarAlerta("Error de latitud final", "La latitud final debe ser un número entre -90 y 90.");
+                        throw new NumberFormatException("latitud final fuera de rango");
+                }
+                return latitud;
+        }
+
+        private double parsearLongitudFinal() {
+                if (longitudFinalField.getText().trim().isEmpty()) {
+                        mostrarAlerta("Error de longitud final", "La longitud final es obligatoria.");
+                        throw new NumberFormatException("longitud final vacía");
+                }
+
+                double longitud;
+                try {
+                        longitud = Double.parseDouble(longitudFinalField.getText().trim());
+                } catch (NumberFormatException e) {
+                        mostrarAlerta("Error de longitud final", "La longitud final debe ser un número válido.");
+                        throw e;
+                }
+                if (!Double.isFinite(longitud) || longitud < -180 || longitud > 180) {
+                        mostrarAlerta("Error de longitud final", "La longitud final debe ser un número entre -180 y 180.");
+                        throw new NumberFormatException("longitud final fuera de rango");
+                }
+                return longitud;
+        }
+
         private double parsearAltitud() {
                 if (altitudMaximaField.getText().trim().isEmpty()) {
                         mostrarAlerta("Error de altitud", "La altitud máxima es obligatoria.");
@@ -234,6 +284,12 @@ public class RutaFormController {
                 longitudInicialField.setTextFormatter(crearFormatterNumerico(
                                 longitudInicialField, true, DECIMALES_COORDENADAS,
                                 "Ingrese un valor entre -180 y 180. Use punto decimal y hasta 4 decimales."));
+                latitudFinalField.setTextFormatter(crearFormatterNumerico(
+                                latitudFinalField, true, DECIMALES_COORDENADAS,
+                                "La latitud final debe estar entre -90 y 90. Use punto decimal y hasta 4 decimales."));
+                longitudFinalField.setTextFormatter(crearFormatterNumerico(
+                                longitudFinalField, true, DECIMALES_COORDENADAS,
+                                "La longitud final debe estar entre -180 y 180. Use punto decimal y hasta 4 decimales."));
                 altitudMaximaField.setTextFormatter(crearFormatterNumerico(
                                 altitudMaximaField, false, -1,
                                 "Ingrese la altitud en metros. Use punto decimal si necesita indicar decimales."));
@@ -313,6 +369,8 @@ public class RutaFormController {
                 nombreField.setText(ruta.getNombre());
                 latitudInicialField.setText(String.valueOf(ruta.getLatitudInicial()));
                 longitudInicialField.setText(String.valueOf(ruta.getLongitudInicial()));
+                latitudFinalField.setText(String.valueOf(ruta.getLatitudFinal()));
+                longitudFinalField.setText(String.valueOf(ruta.getLongitudFinal()));
                 altitudMaximaField.setText(String.valueOf(ruta.getAltitudMaxima()));
                 tipoTerrenoCombo.setValue(ruta.getTipoTerreno());
                 dificultadTecnicaCombo.setValue(ruta.getDificultadTecnica());

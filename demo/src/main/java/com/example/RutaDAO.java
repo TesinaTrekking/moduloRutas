@@ -36,12 +36,14 @@ public class RutaDAO {
                 nombre,
                 latitud_inicial,
                 longitud_inicial,
+                latitud_final,
+                longitud_final,
                 altitud_maxima,
                 tipo_terreno,
                 dificultad_tecnica,
                 dificultad_fisica
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
 
         try (
@@ -51,10 +53,12 @@ public class RutaDAO {
             statement.setString(1, ruta.getNombre());
             statement.setDouble(2, ruta.getLatitudInicial());
             statement.setDouble(3, ruta.getLongitudInicial());
-            statement.setDouble(4, ruta.getAltitudMaxima());
-            statement.setString(5, ruta.getTipoTerreno());
-            statement.setString(6, ruta.getDificultadTecnica());
-            statement.setString(7, ruta.getDificultadFisica());
+            statement.setDouble(4, ruta.getLatitudFinal());
+            statement.setDouble(5, ruta.getLongitudFinal());
+            statement.setDouble(6, ruta.getAltitudMaxima());
+            statement.setString(7, ruta.getTipoTerreno());
+            statement.setString(8, ruta.getDificultadTecnica());
+            statement.setString(9, ruta.getDificultadFisica());
             statement.executeUpdate();
 
             System.out.println("Ruta guardada correctamente.");
@@ -73,6 +77,8 @@ public class RutaDAO {
                 nombre = ?,
                 latitud_inicial = ?,
                 longitud_inicial = ?,
+                latitud_final = ?,
+                longitud_final = ?,
                 altitud_maxima = ?,
                 tipo_terreno = ?,
                 dificultad_tecnica = ?,
@@ -87,11 +93,13 @@ public class RutaDAO {
             statement.setString(1, ruta.getNombre());
             statement.setDouble(2, ruta.getLatitudInicial());
             statement.setDouble(3, ruta.getLongitudInicial());
-            statement.setDouble(4, ruta.getAltitudMaxima());
-            statement.setString(5, ruta.getTipoTerreno());
-            statement.setString(6, ruta.getDificultadTecnica());
-            statement.setString(7, ruta.getDificultadFisica());
-            statement.setInt(8, ruta.getId());
+            statement.setDouble(4, ruta.getLatitudFinal());
+            statement.setDouble(5, ruta.getLongitudFinal());
+            statement.setDouble(6, ruta.getAltitudMaxima());
+            statement.setString(7, ruta.getTipoTerreno());
+            statement.setString(8, ruta.getDificultadTecnica());
+            statement.setString(9, ruta.getDificultadFisica());
+            statement.setInt(10, ruta.getId());
 
             int filasAfectadas = statement.executeUpdate();
             if (filasAfectadas > 0) {
@@ -139,6 +147,8 @@ public class RutaDAO {
                 nombre,
                 latitud_inicial,
                 longitud_inicial,
+                latitud_final,
+                longitud_final,
                 altitud_maxima,
                 tipo_terreno,
                 dificultad_tecnica,
@@ -165,7 +175,8 @@ public class RutaDAO {
 
     public List<Ruta> obtenerTodasIncluyendoInactivas() {
     String sql = """
-        SELECT id, nombre, latitud_inicial, longitud_inicial,
+         SELECT id, nombre, latitud_inicial, longitud_inicial,
+             latitud_final, longitud_final,
                altitud_maxima, tipo_terreno, dificultad_tecnica,
                dificultad_fisica
         FROM rutas
@@ -199,6 +210,8 @@ public class RutaDAO {
                 rs.getString("nombre"),
                 rs.getDouble("latitud_inicial"),
                 rs.getDouble("longitud_inicial"),
+                rs.getDouble("latitud_final"),
+                rs.getDouble("longitud_final"),
                 rs.getDouble("altitud_maxima"),
                 rs.getString("tipo_terreno"),
                 rs.getString("dificultad_tecnica"),
