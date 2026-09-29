@@ -1,69 +1,215 @@
-/* Fondo de la ventana (el VBox raíz) */
+/* =========================================================
+   ESTILO GLOBAL - TREKKING MANAGER
+   Inspirado en Google Workspace / Material Design
+   ========================================================= */
+
+/* ---------- Ventana ---------- */
+
 .root {
-    -fx-background-color: #026881;
+    -fx-background-color: #f8f9fa;
+    -fx-font-family: "Segoe UI";
 }
 
-/* Estilo del texto/Label */
+
+/* ---------- Texto ---------- */
+
 .label {
     -fx-font-family: "Segoe UI";
-    -fx-font-size: 20px;
-    -fx-text-fill: #ecf0f1;
-    -fx-font-weight: bold;
-}
-
-.table-view .column-header .label {
-    -fx-text-fill: #222222;
-    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #3c4043;
+    -fx-font-weight: normal;
 }
 
 .field-help {
     -fx-font-size: 11px;
     -fx-font-weight: normal;
-    -fx-text-fill: #b8d8cc;
+    -fx-text-fill: #5f6368;
 }
 
-/* Estilo del botón */
+
+/* ---------- Botones ---------- */
+
 .button {
-    -fx-background-color: #3498db;
+    -fx-background-color: #1a73e8;
     -fx-text-fill: white;
+    -fx-font-family: "Segoe UI";
     -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-    -fx-background-radius: 8px;
+    -fx-font-weight: 500;
+    -fx-padding: 9px 18px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
     -fx-cursor: hand;
 }
 
 .button:hover {
-    -fx-background-color: #2980b9;
+    -fx-background-color: #1769d1;
 }
 
+.button:pressed {
+    -fx-background-color: #1558b0;
+}
+
+
+/* ---------- Botón guardar / acción principal ---------- */
+
 .button-save {
-    -fx-background-color: #2e7d32;
+    -fx-background-color: #1a73e8;
 }
 
 .button-save:hover {
-    -fx-background-color: #256628;
+    -fx-background-color: #1769d1;
 }
 
+
+/* ---------- Botón editar / acción secundaria ---------- */
+
 .button-edit {
-    -fx-background-color: #1976d2;
+    -fx-background-color: #5f6368;
 }
 
 .button-edit:hover {
-    -fx-background-color: #1565c0;
+    -fx-background-color: #4d5156;
 }
 
+
+/* ---------- Botón eliminar / acción destructiva ---------- */
+
 .button-delete {
-    -fx-background-color: #c62828;
+    -fx-background-color: #d93025;
 }
 
 .button-delete:hover {
-    -fx-background-color: #a51f1f;
+    -fx-background-color: #b3261e;
 }
 
-.text-field:error {
-    -fx-border-color: #e74c3c;
+
+/* ---------- Campos de texto ---------- */
+
+.text-field {
+    -fx-background-color: white;
+    -fx-text-fill: #202124;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 10px;
+
+    -fx-border-color: #dadce0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.text-field:hover {
+    -fx-border-color: #bdc1c6;
+}
+
+.text-field:focused {
+    -fx-border-color: #1a73e8;
     -fx-border-width: 2px;
 }
-#mostrarInactivasCheckBox {
-    -fx-text-fill: white;
+
+
+/* ---------- Error en campos ---------- */
+
+.text-field:error {
+    -fx-border-color: #d93025;
+    -fx-border-width: 2px;
 }
+
+
+/* ---------- ComboBox ---------- */
+
+.combo-box {
+    -fx-background-color: white;
+    -fx-font-size: 14px;
+
+    -fx-border-color: #dadce0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.combo-box:hover {
+    -fx-border-color: #bdc1c6;
+}
+
+.combo-box:focused {
+    -fx-border-color: #1a73e8;
+    -fx-border-width: 2px;
+}
+
+
+/* ---------- Tabla ---------- */
+
+.table-view {
+    -fx-background-color: white;
+
+    -fx-border-color: #dadce0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f1f3f4;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f1f3f4;
+    -fx-border-color: #dadce0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #3c4043;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #202124;
+    -fx-font-size: 13px;
+    -fx-padding: 7px;
+}
+
+.table-row-cell:filled:hover {
+    -fx-background-color: #f1f3f4;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e8f0fe;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #202124;
+}
+
+
+/* ---------- CheckBox ---------- */
+
+#mostrarInactivasCheckBox {
+    -fx-text-fill: #3c4043;
+    -fx-font-size: 14px;
+}
+
+.check-box {
+    -fx-text-fill: #3c4043;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #1a73e8;
+    -fx-border-color: #1a73e8;
+}
+
+
+/* ---------- Scrollbars ---------- */
+
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #bdc1c6;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #9aa0a6;

@@ -113,6 +113,7 @@
                 styleClass="button-edit" />
 
             <Button text="Eliminar"
+                fx:id="eliminarButton"
                 onAction="#eliminarRuta"
                 styleClass="button-delete" />
 

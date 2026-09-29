@@ -10,6 +10,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ButtonType;
@@ -70,6 +71,8 @@ public class RutaController implements Initializable {
 
         @FXML
         private CheckBox mostrarInactivasCheckBox;
+        @FXML
+        private Button eliminarButton;
 
         @Override
         public void initialize(URL url, ResourceBundle rb) {
@@ -110,11 +113,13 @@ public class RutaController implements Initializable {
 
                 tablaRutas.getSortOrder().add(colNombre);
                 tablaRutas.sort();
+                tablaRutas.getSelectionModel()
+                                .selectedItemProperty()
+                                .addListener((observable, anterior, actual) -> actualizarEstadoBotonEliminar());
 
         }
 
         private void cargarRutas() {
-
                 if (mostrarInactivasCheckBox.isSelected()) {
                         rutas = FXCollections.observableArrayList(
                                         rutaDAO.obtenerTodasIncluyendoInactivas());
@@ -124,10 +129,10 @@ public class RutaController implements Initializable {
                 }
 
                 rutasFiltradas = new FilteredList<>(rutas);
-
                 tablaRutas.setItems(rutasFiltradas);
-
                 aplicarFiltros();
+
+                actualizarEstadoBotonEliminar();
         }
 
         @FXML
@@ -165,6 +170,12 @@ public class RutaController implements Initializable {
                                         "Selecciona una ruta",
                                         "Selecciona una ruta para eliminar.");
 
+                        return;
+                }
+                if (!rutaDAO.estaActiva(rutaSeleccionada.getId())) {
+                        mostrarAlerta(
+                                        "Ruta inactiva",
+                                        "La ruta seleccionada ya está inactiva.");
                         return;
                 }
 
@@ -288,5 +299,13 @@ public class RutaController implements Initializable {
                 alerta.setContentText(mensaje);
 
                 alerta.showAndWait();
+        }
+
+        private void actualizarEstadoBotonEliminar() {
+                Ruta rutaSeleccionada = tablaRutas.getSelectionModel().getSelectedItem();
+
+                eliminarButton.setDisable(
+                                rutaSeleccionada == null
+                                                || !rutaDAO.estaActiva(rutaSeleccionada.getId()));
         }
 }
