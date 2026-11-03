@@ -2,7 +2,7 @@
 
 Módulo de gestión de rutas para el sistema de planificación y administración de actividades de trekking y montañismo.
 
-El módulo permite registrar, consultar, modificar y gestionar la información asociada a las rutas mediante un ABM (Alta, Baja y Modificación).
+El módulo permite registrar, consultar, modificar y gestionar la información asociada a las rutas mediante operaciones de ABM (Alta, Baja y Modificación).
 
 ## 🎯 Objetivo
 
@@ -12,103 +12,113 @@ Proporcionar una interfaz que permita administrar de forma sencilla y validada l
 
 El módulo permite:
 
-* Crear nuevas rutas.
-* Visualizar el listado de rutas registradas.
-* Editar rutas existentes.
-* Eliminar rutas.
-* Validar los datos ingresados.
-* Evitar el registro de rutas con nombres duplicados.
-* Validar coordenadas geográficas.
-* Seleccionar el tipo de terreno.
-* Seleccionar el nivel de dificultad técnica.
-* Seleccionar el nivel de dificultad física.
+- Crear nuevas rutas.
+- Visualizar el listado de rutas registradas.
+- Editar rutas existentes.
+- Eliminar rutas.
+- Validar los datos ingresados.
+- Evitar el registro de rutas con nombres duplicados.
+- Validar coordenadas geográficas.
+- Validar la altitud máxima.
+- Seleccionar el tipo de terreno.
+- Seleccionar el nivel de dificultad técnica.
+- Seleccionar el nivel de dificultad física.
 
 ### Datos de una ruta
 
 Cada ruta contempla actualmente los siguientes datos:
 
-* **Nombre**
-* **Latitud inicial**
-* **Longitud inicial**
-* **Altitud máxima**
-* **Tipo de terreno**
-* **Dificultad técnica**
-* **Dificultad física**
+- **Nombre**
+- **Latitud inicial**
+- **Longitud inicial**
+- **Altitud máxima**
+- **Tipo de terreno**
+- **Dificultad técnica**
+- **Dificultad física**
 
 ## 🛠️ Tecnologías
 
-* **Java 17**
-* **JavaFX 17**
-* **FXML**
-* **CSS**
-* **SQLite**
-* **JDBC**
-* **Maven**
-* **Git**
+- **Java 17**
+- **JavaFX 17**
+- **FXML**
+- **CSS**
+- **SQLite**
+- **JDBC**
+- **Maven**
+- **Git**
 
 ## 📁 Estructura
 
-El módulo se encuentra organizado de la siguiente manera:
+El repositorio presenta la siguiente organización:
 
 ```text
-demo/
-├── pom.xml
-├── mvnw
-├── mvnw.cmd
+.
+├── .gitignore
+├── README.md
 │
-└── src/
-    └── main/
-        ├── java/
-        │   ├── module-info.java
-        │   └── com/
-        │       └── example/
-        │           ├── App.java
-        │           ├── ConexionDB.java
-        │           ├── Ruta.java
-        │           ├── RutaController.java
-        │           └── RutaFormController.java
-        │
-        └── resources/
-            └── com/
-                └── example/
-                    ├── rutas.fxml
-                    ├── ruta-form.fxml
-                    └── styles.css
+└── demo/
+    ├── .mvn/
+    │   └── wrapper/
+    │       └── maven-wrapper.properties
+    │
+    ├── mvnw
+    ├── mvnw.cmd
+    ├── pom.xml
+    │
+    └── src/
+        └── main/
+            ├── java/
+            │   ├── module-info.java
+            │   └── com/
+            │       └── example/
+            │           ├── App.java
+            │           ├── ConexionDB.java
+            │           ├── Ruta.java
+            │           ├── RutaController.java
+            │           ├── RutaDAO.java
+            │           └── RutaFormController.java
+            │
+            └── resources/
+                └── com/
+                    └── example/
+                        ├── ruta-form.fxml
+                        ├── rutas.fxml
+                        └── styles.css
 ```
 
-> La estructura de paquetes y nombres de clases podrá ajustarse durante la etapa de integración del proyecto general.
+La carpeta `demo` contiene el proyecto Java y su configuración de Maven. El código fuente se organiza en el paquete `com.example`, mientras que los archivos FXML y CSS se encuentran en los recursos de la aplicación.
+
+> La estructura de paquetes y los nombres de clases podrán ajustarse durante la etapa de integración con el proyecto general.
 
 ## 🗄️ Base de datos
 
-El módulo utiliza **SQLite** para almacenar las rutas.
+El módulo utiliza **SQLite** para almacenar la información de las rutas.
 
-El acceso a la base de datos se realiza mediante **JDBC**.
-
-La tabla correspondiente a las rutas se crea automáticamente al iniciar la aplicación si todavía no existe.
+El acceso a la base de datos se realiza mediante **JDBC**, utilizando las clases correspondientes para la conexión y las operaciones de persistencia.
 
 ## ✅ Validaciones
 
-El módulo incorpora validaciones para evitar datos incorrectos o inconsistentes.
+El módulo incorpora validaciones para evitar el ingreso de datos incorrectos o inconsistentes.
 
 Entre ellas:
 
-* Campos obligatorios.
-* Formato válido para el nombre.
-* Nombres de rutas duplicados.
-* Latitud dentro del rango válido.
-* Longitud dentro del rango válido.
-* Valores numéricos para coordenadas y altitud.
-* Valores válidos en los campos de selección.
-
-Las validaciones y mensajes de error continuarán refinándose durante el desarrollo del proyecto.
+- Nombre obligatorio.
+- El nombre solo admite letras, números y espacios.
+- Detección de nombres de rutas duplicados.
+- Latitud obligatoria y dentro del rango de -90 a 90.
+- Longitud obligatoria y dentro del rango de -180 a 180.
+- Altitud máxima obligatoria y mayor o igual a cero.
+- Validación del formato numérico de coordenadas y altitud.
+- Selección obligatoria del tipo de terreno.
+- Selección obligatoria de la dificultad técnica y física.
 
 ## 🚀 Ejecución
 
 ### Requisitos
 
-* JDK 17.
-* Git.
-* Una conexión a Internet para la descarga inicial de dependencias Maven.
+- JDK 17.
+- Git.
+- Una conexión a Internet para la descarga inicial de dependencias Maven.
 
 No es necesario instalar JavaFX manualmente, ya que las dependencias se gestionan mediante Maven.
 
@@ -128,6 +138,8 @@ Para ejecutar la aplicación:
 
 ### Linux / macOS
 
+Desde la carpeta `demo`:
+
 ```bash
 ./mvnw clean compile
 ```
@@ -140,19 +152,17 @@ Para ejecutar:
 
 ## 🧪 Pruebas
 
-El módulo será sometido a pruebas funcionales para verificar:
+El módulo contempla pruebas funcionales para verificar:
 
-* Alta de rutas.
-* Consulta y listado.
-* Modificación.
-* Eliminación.
-* Validaciones de campos.
-* Casos de entrada inválida.
-* Detección de duplicados.
-* Persistencia de los datos.
-* Navegación entre las distintas pantallas.
-
-Las pruebas se ampliarán durante la etapa de integración y testing del proyecto general.
+- Alta de rutas.
+- Consulta y listado.
+- Modificación.
+- Eliminación.
+- Validaciones de campos.
+- Casos de entrada inválida.
+- Detección de duplicados.
+- Persistencia de los datos.
+- Navegación entre las distintas pantallas.
 
 ## 🔄 Estado del proyecto
 
